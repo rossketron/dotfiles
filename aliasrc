@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# Vervosity and settings:
+alias \
+    cp="cp -iv" \
+    mv="mv -iv" \
+    rm="rm -vI"
+
+# Colorize commands when possible
+alias \
+    ls="ls -hN --color=auto --group-directories-first" \
+    la="ls -al --color=auto --group-directories-first" \
+    grep="grep --color=auto" \
+    diff="diff --color=auto" \
+    ccat="highlight --out-format=ansi"
