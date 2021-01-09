@@ -1,27 +1,45 @@
 # Zsh Config File
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' formats \
+    '%B%F{1}[%F{2}%b%F{1}]'
+
+precmd() { vcs_info }
 
 # Enable colors and change prompt:
 autoload -U colors && colors
-PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
+setopt prompt_subst
+PS1='%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%m %{$fg[magenta]%}%~%{$fg[red]%}]${vcs_info_msg_0_} 
+%{$fg[red]%}$%b%{$reset_color%} ' 
 
 # History in cache directory:
+setopt histignorealldups sharehistory
 HISTSIZE=10000
 SAVEHIST=10000
-HISTFILE=~/.cache/zsh/history
+HISTFILE=~/.zsh/cache/history
 
 # Basic auto/tab complete:
 autoload -U compinit
-zstyle ':completion:*' menu select
 zmodload zsh/complist
-compinit
+compinit -d ~/.zsh/.zcompdump
 _comp_options+=(globdots)  # Include hidden files in comp
+zstyle ':completion:*' completer _expand _complete _correct _approximate
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*'  menu select
+zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
+zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
+zstyle ':completion:*' verbose true
 
 # VIM mode Baby!!!
 bindkey -v
-export KEYTIMEOUT=1
+export KEYTIMEOUT=20
 
 # Use vim keys in tab complete menu:
 # This means you can't type with [h,j,k,l] in menus
+bindkey -M viins ' h' vi-backward-char
+bindkey -M viins ' j' vi-down-line
+bindkey -M viins ' k' vi-up-line
+bindkey -M viins ' l' vi-forward-char
+bindkey -M viins 'kj' vi-cmd-mode
 bindkey -M menuselect 'h' vi-backward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
 bindkey -M menuselect 'k' vi-up-line-or-history
@@ -65,9 +83,16 @@ bindkey -s '^o' 'lfcd\n'
 autoload edit-command-line; zle -N edit-command-line
 bindkey '^e' edit-command-line
 
-# Load aliases and shortcuts if they exist:
-[ -f "$HOME/.config/zsh/shortcutrc" ] && source "$HOME/.config/zsh/shortcutrc"
-[ -f "$HOME/.config/zsh/aliasrc" ] && source "$HOME/.config/zsh/aliasrc"
+alias stop="^c"
+alias gitkeep="touch .gitkeep"
 
-# Load syntax highlighting -- MUST BE LAST
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export PATH="/usr/local/opt/mongodb-community@4.0.bin:$PATH"
+
+# Load aliases and shortcuts if they exist:
+[ -f "$HOME/.zsh/aliasrc" ] && source "$HOME/.zsh/aliasrc"
+
+# [ -f "$HOME/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ] &&
+# source "$HOME/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"

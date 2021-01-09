@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =6
+let g:netrw_dirhist_6='/Users/ross/.config/configstore'
+let g:netrw_dirhist_5='/Users/ross/.vim'
+let g:netrw_dirhist_4='/Users/ross/.vim/config'
+let g:netrw_dirhist_3='/Users/ross/.vim'
+let g:netrw_dirhist_2='/Users/ross/.vim/backups'
+let g:netrw_dirhist_1='/Users/ross/.vim'
+let g:netrw_dirhist_0='/Users/ross/.vim/autoload'
+let g:netrw_dirhist_9='/Users/ross/.vim'
+let g:netrw_dirhist_8='/Users/ross/.vim/sessions'
+let g:netrw_dirhist_7='/Users/ross/.vim'

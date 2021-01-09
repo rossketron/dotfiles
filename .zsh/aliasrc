@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# Vervosity and settings:
+alias \
+    cp="cp -iv" \
+    mv="mv -iv" \
+    rm="rm -iv" \
+    c="clear" \
+    ..="cd ../" \
+    ../..="cd ../../" \
+    ..3="cd ../../../" 
+
+# Colorize commands when possible
+alias \
+    ls="gls -hN --color=auto --group-directories-first" \
+    la="gls -a --color=auto --group-directories-first" \
+    lal="gls -al --color=auto --group-directories-first" 
+
+# Git aliases used for version control
+alias \
+    ga="git add" \
+    gc="git commit -m" \
+    gp="git pull" \
+    gb="git branch" \
+    gco="git checkout" \
+    gs="git status"
+
+
