@@ -36,8 +36,8 @@ export KEYTIMEOUT=20
 # Use vim keys in tab complete menu:
 # This means you can't type with [h,j,k,l] in menus
 bindkey -M viins ' h' vi-backward-char
-bindkey -M viins ' j' vi-down-line
-bindkey -M viins ' k' vi-up-line
+bindkey -M viins ' j' vi-down-line-or-history
+bindkey -M viins ' k' vi-up-line-or-history
 bindkey -M viins ' l' vi-forward-char
 bindkey -M viins 'kj' vi-cmd-mode
 bindkey -M menuselect 'h' vi-backward-char
@@ -94,5 +94,9 @@ export PATH="/usr/local/opt/mongodb-community@4.0.bin:$PATH"
 # Load aliases and shortcuts if they exist:
 [ -f "$HOME/.zsh/aliasrc" ] && source "$HOME/.zsh/aliasrc"
 
-# [ -f "$HOME/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ] &&
-# source "$HOME/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+(( ${+ZSH_HIGHLIGHT_STYLES} )) || typeset -A ZSH_HIGHLIGHT_STYLES
+ZSH_HIGHLIGHT_STYLES[path]=none
+ZSH_HIGHLIGHT_STYLES[path_prefix]=none
+
+[ -f "$HOME/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ] &&
+  source "$HOME/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"

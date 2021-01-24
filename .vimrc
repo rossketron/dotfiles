@@ -12,8 +12,7 @@ set ruler
 set backspace=indent,eol,start  "Allow backspace in insert mode
 set history=1000                "Store lots of :cmdline history
 set showcmd                     "Show incomplete cmds down the bottom
-set visualbell                  "No sounds
-set encoding=utf-8
+set novisualbell                  "No sounds set encoding=utf-8
 set pumheight=10
 set mouse=a
 set splitbelow
@@ -51,7 +50,6 @@ Plug 'junegunn/fzf.vim'
 Plug 'vim-utils/vim-man'
 Plug 'sheerun/vim-polyglot'
 Plug 'gruvbox-community/gruvbox'
-Plug 'sainnhe/gruvbox-material'
 Plug 'phanviet/vim-monokai-pro'
 Plug 'vim-airline/vim-airline'
 Plug 'flazz/vim-colorschemes'
@@ -61,11 +59,14 @@ call plug#end()
 set background=dark
 let g:gruvbox_contrast_dark = 'medium'
 colorscheme gruvbox
+highlight Normal ctermbg=NONE guibg=NONE
+highlight SignColumn ctermbg=NONE guibg=NONE
+highlight LineNr ctermbg=NONE guibg=NONE
 
 "=================PLUGIN CONFIGS==========================
 "-lightgrey column for text width
-set colorcolumn=80
-highlight ColorColumn ctermbg=0 guibg=lightgrey
+"set colorcolumn=90
+"highlight ColorColumn ctermbg=0 guibg=lightgrey
 
 let mapleader = " "
 set timeoutlen=100
