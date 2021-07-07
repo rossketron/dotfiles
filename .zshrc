@@ -15,7 +15,15 @@ PS1='%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%m %{$fg[magent
 setopt histignorealldups sharehistory
 HISTSIZE=10000
 SAVEHIST=10000
-HISTFILE=~/.zsh/cache/history
+HISTFILE=$HOME/.zsh/cache/history
+
+grab() {
+    cat $HISTFILE | grep ${1}
+}
+
+last() {
+    cat $HISTFILE | grep ${1}
+}
 
 # Basic auto/tab complete:
 autoload -U compinit
@@ -35,10 +43,6 @@ export KEYTIMEOUT=20
 
 # Use vim keys in tab complete menu:
 # This means you can't type with [h,j,k,l] in menus
-bindkey -M viins ' h' vi-backward-char
-bindkey -M viins ' j' vi-down-line-or-history
-bindkey -M viins ' k' vi-up-line-or-history
-bindkey -M viins ' l' vi-forward-char
 bindkey -M viins 'kj' vi-cmd-mode
 bindkey -M menuselect 'h' vi-backward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
@@ -83,13 +87,27 @@ bindkey -s '^o' 'lfcd\n'
 autoload edit-command-line; zle -N edit-command-line
 bindkey '^e' edit-command-line
 
-alias stop="^c"
 alias gitkeep="touch .gitkeep"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-export PATH="/usr/local/opt/mongodb-community@4.0.bin:$PATH"
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('$HOME/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "$HOME/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "$HOME/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="$HOME/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<conda initialize <<<
+conda deactivate
 
 # Load aliases and shortcuts if they exist:
 [ -f "$HOME/.zsh/aliasrc" ] && source "$HOME/.zsh/aliasrc"

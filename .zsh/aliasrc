@@ -1,28 +1,39 @@
 #!/bin/sh
 
+# This allows ssh X11 forwarding on WSL2
+# Also requires that XLaunch is installed and running when connecting via ssh with -XY
+export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
+export LIBGL_ALWAYS_INDIRECT=1
+
+# Activate, Deactivate, Create conda environments
+alias \
+    acon="conda activate" \
+    dcon="conda deactivate" \
+    ncon="conda create -y -n"
+
 # Vervosity and settings:
 alias \
-    cp="cp -iv" \
-    mv="mv -iv" \
-    rm="rm -iv" \
+    grab="history | grep" \
+    cp="cp -v" \
+    mv="mv -v" \
+    rm="rm -v" \
     c="clear" \
     ..="cd ../" \
-    ../..="cd ../../" \
-    ..3="cd ../../../" 
+    ../="cd ../../" \
+    ..//="cd ../../../" 
 
 # Colorize commands when possible
 alias \
-    ls="gls -hN --color=auto --group-directories-first" \
-    la="gls -a --color=auto --group-directories-first" \
-    lal="gls -al --color=auto --group-directories-first" 
+    ls="ls -hN --color=auto --group-directories-first" \
+    la="ls -a --color=auto --group-directories-first" \
+    lal="ls -al --color=auto --group-directories-first" 
 
 # Git aliases used for version control
 alias \
     ga="git add" \
     gc="git commit -m" \
-    gp="git pull" \
+    gpl="git pull" \
+    gps="git push" \
     gb="git branch" \
     gco="git checkout" \
     gs="git status"
-
-
