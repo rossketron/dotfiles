@@ -26,7 +26,7 @@ ZSH_CUSTOM=~/.oh-my-zsh/custom
 # Check for existing configs and rename to save without deleting
 [[ -f ~/.zshrc ]] && mv ~/.zshrc ~/.zshrc.old
 [[ -f ~/.vimrc ]] && mv ~/.vimrc ~/.vimrc.old
-[[ -f ~/.zsh ]] && mv ~/.zsh ~/.zsh.old
+[[ -d ~/.zsh ]] && mv ~/.zsh ~/.zsh.old
 
 
 # Install Oh-my-zsh
