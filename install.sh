@@ -1,17 +1,21 @@
 #!/bin/bash
 
 # Configurables
-PKG_MANAGER="apt"
 PKGS=(git curl wget vim zsh)
 INSTALL_ANACONDA=true
 ANACONDA_VERSION=2021.05-Linux-x86_64
 INSTALL_ROOT=$HOME/software/install
 
-# Use this for Ubuntu gcc install
-C_PKGS=(build-essential)
+# Check for Fedora or Ubuntu, these are only supported systems so far
+which dnf > /dev/null && {
+    PKG_MANAGER="dnf"
+    C_PKGS=(gcc gcc-c++ kernel-devel)
+}
 
-# Use this for Fedora gcc install
-#C_PKGS=(gcc gcc-c++ kernel-devel)
+which apt-get > /dev/null && {
+    PKG_MANAGER="apt-get"
+    C_PKGS=(build-essential)
+}
 
 # Install system level packages with pkg manager
 sudo $PKG_MANAGER install $PKGS $C_PKGS
@@ -36,12 +40,11 @@ cp -r .zsh ~
 # Clone custom plugins for syntax highlighting, conda completion, and powerlevel10k prompt and fonts
 git clone https://github.com/esc/conda-zsh-completion.git $ZSH_CUSTOM/plugins/conda-zsh-completion
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
 wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf
 wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf
 wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf
 wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
-
 
 # Make software install dir to place Anaconda in
 if [ ! -d $INSTALL_ROOT ] ; then
