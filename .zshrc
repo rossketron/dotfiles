@@ -1,43 +1,37 @@
-# Zsh Config File
-autoload -Uz vcs_info
-zstyle ':vcs_info:*' formats \
-    '%B%F{1}[%F{2}%b%F{1}]'
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
 
-precmd() { vcs_info }
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-# Enable colors and change prompt:
-autoload -U colors && colors
-setopt prompt_subst
-PS1='%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%m %{$fg[magenta]%}%~%{$fg[red]%}]${vcs_info_msg_0_} 
-%{$fg[red]%}$%b%{$reset_color%} ' 
+# Path to your oh-my-zsh installation.
+export ZSH="/home/ross/.oh-my-zsh"
+#
+# Preferred editor for local and remote sessions
+export EDITOR='vim'
 
-# History in cache directory:
-setopt histignorealldups sharehistory
-HISTSIZE=10000
-SAVEHIST=10000
-HISTFILE=$HOME/.zsh/cache/history
+# Set name of the theme to load
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
-grab() {
-    cat $HISTFILE | grep ${1}
-}
+# Disable marking untracked files under VCS as dirty
+DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-last() {
-    cat $HISTFILE | grep ${1}
-}
 
-# Basic auto/tab complete:
-autoload -U compinit
-zmodload zsh/complist
-compinit -d ~/.zsh/.zcompdump
-_comp_options+=(globdots)  # Include hidden files in comp
-zstyle ':completion:*' completer _expand _complete _correct _approximate
-zstyle ':completion:*' group-name ''
-zstyle ':completion:*'  menu select
-zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
-zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
-zstyle ':completion:*' verbose true
+# Configure no underlining in syntax highlighting custom plugin
+(( ${+ZSH_HIGHLIGHT_STYLES} )) || typeset -A ZSH_HIGHLIGHT_STYLES
+ZSH_HIGHLIGHT_STYLES[path]=none
+ZSH_HIGHLIGHT_STYLES[path_prefix]=none
 
-# VIM mode Baby!!!
+# Source plugins -> requires cloning conda and zsh completion repos manually
+plugins=(git conda-zsh-completion zsh-syntax-highlighting)
+
+source $ZSH/oh-my-zsh.sh
+
+# Set up VIM mode
 bindkey -v
 export KEYTIMEOUT=20
 
@@ -48,7 +42,6 @@ bindkey -M menuselect 'h' vi-backward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
 bindkey -M menuselect 'k' vi-up-line-or-history
 bindkey -M menuselect 'l' vi-forward-char
-bindkey -v '^?' backward-delete-char
 
 # Change cursor shape based on current Vi mode:
 function zle-keymap-select {
@@ -71,50 +64,23 @@ zle -N zle-line-init
 echo -ne '\e[5 q' #use beam shape cursor on startup
 preexec() { echo -ne '\e[5 q' ; } # use beam shape cursor for each new prompt
 
-#Use lf to switch directories and bind it to ctrl-o
-lfcd() {
-    tmp="$(mktemp)"
-    lf -last-dir-path="$tmp" "$@"
-    if [ -f "$tmp" ]; then
-        dir="$(cat "$tmp")"
-        rm -f "$tmp"
-        [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
-    fi
-}
-bindkey -s '^o' 'lfcd\n'
-
-# Edit line in vim with ctrl-e:
-autoload edit-command-line; zle -N edit-command-line
-bindkey '^e' edit-command-line
-
-alias gitkeep="touch .gitkeep"
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# Set user aliases
+[[ -f ~/.zsh/aliasrc ]] && source ~/.zsh/aliasrc
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('$HOME/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/home/ross/software/install/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "$HOME/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "$HOME/anaconda3/etc/profile.d/conda.sh"
+    if [ -f "/home/ross/software/install/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/ross/software/install/anaconda3/etc/profile.d/conda.sh"
     else
-        export PATH="$HOME/anaconda3/bin:$PATH"
+        export PATH="/home/ross/software/install/anaconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
-# <<conda initialize <<<
-conda deactivate
+# <<< conda initialize <<<
 
-# Load aliases and shortcuts if they exist:
-[ -f "$HOME/.zsh/aliasrc" ] && source "$HOME/.zsh/aliasrc"
-
-(( ${+ZSH_HIGHLIGHT_STYLES} )) || typeset -A ZSH_HIGHLIGHT_STYLES
-ZSH_HIGHLIGHT_STYLES[path]=none
-ZSH_HIGHLIGHT_STYLES[path_prefix]=none
-
-[ -f "$HOME/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ] &&
-  source "$HOME/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
