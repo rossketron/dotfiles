@@ -6,8 +6,8 @@ To install and setup environment:
 
 1. Run the following:
 ```
-git clone git@github.com:rossketron/Dotfiles
-cd Dotfiles
+git clone git@github.com:rossketron/dotfiles
+cd dotfiles
 bash install.sh
 ```
 
