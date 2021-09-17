@@ -27,6 +27,7 @@ ZSH_CUSTOM=~/.oh-my-zsh/custom
 [[ -f ~/.zshrc ]] && mv ~/.zshrc ~/.zshrc.old
 [[ -f ~/.vimrc ]] && mv ~/.vimrc ~/.vimrc.old
 [[ -d ~/.zsh ]] && mv ~/.zsh ~/.zsh.old
+[[ -d ~/.vim ]] && mv ~/.vim ~/.vim.old
 
 
 # Install Oh-my-zsh
@@ -36,6 +37,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 cp .zshrc ~
 cp .vimrc ~
 cp -r .zsh ~
+cp -r .vim ~
 
 # Clone custom plugins for syntax highlighting, conda completion, and powerlevel10k prompt and fonts
 git clone https://github.com/esc/conda-zsh-completion.git $ZSH_CUSTOM/plugins/conda-zsh-completion
@@ -46,14 +48,14 @@ wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20B
 wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf
 wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
 
-# Make software install dir to place Anaconda in
-if [ ! -d $INSTALL_ROOT ] ; then
-    echo "======= Creating ~/software/install directory ================="
-    mkdir -p $INSTALL_ROOT
-fi
 
 # Install Anaconda
 if [ "$INSTALL_ANACONDA" = true ] ; then
+   # Make software install dir to place Anaconda in
+   if [ ! -d $INSTALL_ROOT ] ; then
+       echo "======= Creating ~/software/install directory ================="
+       mkdir -p $INSTALL_ROOT
+   fi
    if ! which conda > /dev/null ; then
        if [ ! -d $INSTALL_ROOT/anaconda3 ] ; then
             echo "======= Installing Anaconda3, Version: ${ANACONDA_VERSION} ================="
