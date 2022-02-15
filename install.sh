@@ -69,18 +69,17 @@ echo "eval \"$(starship init bash)\"" >> ~/.bashrc
 
 # Install Anaconda to the INSTALL_ROOT dir (set at top of page)
 if [ "$INSTALL_ANACONDA" = true ] ; then
-   # Make software install dir to place Anaconda in
-   if [ ! -d $INSTALL_ROOT ] ; then
-       echo "======= Creating ~/software/install directory ================="
-       mkdir -p $INSTALL_ROOT
-   fi
-   if ! which conda > /dev/null ; then
-       if [ ! -d $INSTALL_ROOT/anaconda3 ] ; then
-            echo "======= Installing Anaconda3, Version: ${ANACONDA_VERSION} ================="
-            wget https://repo.anaconda.com/archive/Anaconda3-$ANACONDA_VERSION.sh 
-            bash Anaconda3-$ANACONDA_VERSION.sh -b -p $INSTALL_ROOT/anaconda3
-        fi
+  if [ ! -d $INSTALL_ROOT ] ; then
+    echo "======= Creating ~/software/install directory ================="
+    mkdir -p $INSTALL_ROOT
+  fi
+  if ! which conda > /dev/null ; then
+    if [ ! -d $INSTALL_ROOT/anaconda3 ] ; then
+      echo "======= Installing Anaconda3, Version: ${ANACONDA_VERSION} ================="
+      wget https://repo.anaconda.com/archive/Anaconda3-$ANACONDA_VERSION.sh 
+      bash Anaconda3-$ANACONDA_VERSION.sh -b -p $INSTALL_ROOT/anaconda3
     fi
+  fi
 fi
 
 # Print instructions for finishing install of fonts and terminal settings
