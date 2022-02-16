@@ -1,3 +1,12 @@
+############################
+# Variables
+############################
+export GIT_DIRECTORY=$HOME/git   # Location where your git repositories are cloned
+DOTFILES=$GIT_DIRECTORY/dotfiles # Location of your dotfiles
+
+############################
+# Oh-my-zsh and Powerlevel10k prompt initialization
+############################
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -9,10 +18,7 @@ fi
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/ross/.oh-my-zsh"
-#
-# Preferred editor for local and remote sessions
-export EDITOR='vim'
+export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load
 ZSH_THEME="powerlevel10k/powerlevel10k"
@@ -20,30 +26,48 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Disable marking untracked files under VCS as dirty
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-
-# Configure no underlining in syntax highlighting custom plugin
+############################
+# Configure ZSH Plugins
+############################
+# Set no underlining in syntax highlighting custom plugin
 (( ${+ZSH_HIGHLIGHT_STYLES} )) || typeset -A ZSH_HIGHLIGHT_STYLES
 ZSH_HIGHLIGHT_STYLES[path]=none
 ZSH_HIGHLIGHT_STYLES[path_prefix]=none
 
-# Source plugins -> requires cloning conda and zsh completion repos manually
+# Source plugins for git, conda, and syntax highlighting
 plugins=(git conda-zsh-completion zsh-syntax-highlighting)
 
+############################
+# Source Oh-my-zsh
+############################
 source $ZSH/oh-my-zsh.sh
 
-# Set up VIM mode
+############################
+# Configure VIM keybindings for command line editing
+############################
+# Turn on VIM mode
 bindkey -v
+
+# Set shorter keytimeout to avoid typing lag
 export KEYTIMEOUT=20
 
 # Use vim keys in tab complete menu:
 # This means you can't type with [h,j,k,l] in menus
+# In Menu:
+#     h -> go left in menu
+#     j -> go down in menu
+#     k -> go up in menu
+#     l -> go right in menu
+# Always:
+#    kj -> typing 'kj' quickly enters VIM command mode (same as Escape key)
 bindkey -M viins 'kj' vi-cmd-mode
 bindkey -M menuselect 'h' vi-backward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
 bindkey -M menuselect 'k' vi-up-line-or-history
 bindkey -M menuselect 'l' vi-forward-char
 
-# Change cursor shape based on current Vi mode:
+# Change cursor shape based on current VIM mode
+# Use beam cursor for insert mode and block cursor for command mode
 function zle-keymap-select {
     if [[ ${KEYMAP} == vicmd ]] ||
        [[ $1 = 'block' ]]; then
@@ -55,18 +79,20 @@ function zle-keymap-select {
         echo -ne '\e[5 q'
     fi
 }
+
+# Set VIM mode as 'insert' on initial load and use beam shape cursor
 zle -N zle-keymap-select
 zle-line-init() {
-    zle -K viins # initiate 'vi insert' as keymap, can remove if set bindkey -V elsewhere
+    zle -K viins 
     echo -ne "\e[5 q"
 }
 zle -N zle-line-init
 echo -ne '\e[5 q' #use beam shape cursor on startup
 preexec() { echo -ne '\e[5 q' ; } # use beam shape cursor for each new prompt
 
-# Set user aliases
-[[ -f ~/.zsh/aliasrc ]] && source ~/.zsh/aliasrc
-
+############################
+# Initialize Anaconda 
+############################
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/home/ross/software/install/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
@@ -82,5 +108,17 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+############################
+# Source the shared configuration files
+############################
+source $DOTFILES/zsh/ember.zshrc
+source $DOTFILES/zsh/git.zshrc
+source $DOTFILES/zsh/linux.zshrc
+source $DOTFILES/zsh/shell.zshrc
+source $DOTFILES/zsh/python.zshrc
+
+############################
+# Set up p10k configure command to customize prompt
+############################
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
