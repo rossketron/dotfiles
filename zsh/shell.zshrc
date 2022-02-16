@@ -24,7 +24,8 @@ export HISTSIZE=1000
 export HISTFILESIZE=2000
 
 # append to the history file, don't overwrite it
-shopt -s histappend
+setopt APPEND_HISTORY
+setopt SHARE_HISTORY
 
 ############################
 # Easily search command history

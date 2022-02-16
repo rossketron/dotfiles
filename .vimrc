@@ -22,7 +22,7 @@ set backspace=indent,eol,start " allow backspace in insert mode
 set hidden                     " buffers in background without being in window
 set clipboard=unnamedplus      " use system clipboard when yanking (not delete)
 set history=1000               " store lots of :cmdline history
-set viminfo+=n~/.vim/viminfo   " use custom file for viminfo
+set viminfo+=n~/git/dotfiles/vim/.viminfo   " use custom file for viminfo
 
 let mapleader=" "              " set [space] to be new mapleader
 set timeoutlen=100             " set timeout btw leader and command
@@ -57,9 +57,9 @@ set nowb                " turn off backup
 
 " keep undo history across sessions, by storing in file
 " only works all the time
-if has('persistent_undo') && isdirectory(expand('~').'/.vim/backups')
-  silent !mkdir ~/.vim/backups > /dev/null 2>&1
-  set undodir=~/.vim/backups
+if has('persistent_undo') && isdirectory(expand('~').'git/dotfiles/vim/backups')
+  silent !mkdir ~/git/dotfiles/vim/backups > /dev/null 2>&1
+  set undodir=~/git/dotfiles/vim/backups
   set undofile
 endif
 
@@ -118,11 +118,11 @@ set nomodeline
 
 " ============= VIM-Plug Initialization ===============
 
-:call plug#begin('~/.vim/plugged')
+call plug#begin("~/git/dotfiles/vim/plugged")
 Plug 'vim-utils/vim-man'         " colorize vim man pages
 Plug 'sheerun/vim-polyglot'      " better syntax support
 Plug 'gruvbox-community/gruvbox' " gruvbox color theme
-Plug 'arcticicestudio/nord-vim'   " nord color theme
+Plug 'arcticicestudio/nord-vim'  " nord color theme
 Plug 'vim-airline/vim-airline'   " airline status bar
 call plug#end()
 
@@ -146,5 +146,5 @@ highlight ColorColumn ctermbg=0 guibg=lightgrey
 
 " =============== EXTERNAL CONFIGS ====================
 
-source ~/.vim/config/autoclose.vim
-source ~/.vim/config/insertLeaderMovements.vim
+source ~/git/dotfiles/vim/config/autoclose.vim
+source ~/git/dotfiles/vim/config/insertLeaderMovements.vim

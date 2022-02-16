@@ -109,13 +109,21 @@ unset __conda_setup
 # <<< conda initialize <<<
 
 ############################
+# Initialize NVM
+############################
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+############################
 # Source the shared configuration files
 ############################
-source $DOTFILES/zsh/ember.zshrc
 source $DOTFILES/zsh/git.zshrc
-source $DOTFILES/zsh/linux.zshrc
-source $DOTFILES/zsh/shell.zshrc
+source $DOTFILES/zsh/ember.zshrc
 source $DOTFILES/zsh/python.zshrc
+source $DOTFILES/zsh/remote.zshrc
+source $DOTFILES/zsh/shell.zshrc
+source $DOTFILES/zsh/windows.zshrc
 
 ############################
 # Set up p10k configure command to customize prompt

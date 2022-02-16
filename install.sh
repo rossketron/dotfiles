@@ -17,11 +17,14 @@ INSTALL_NVM=false
 # Set this to true to install Oh-my-zsh
 INSTALL_OMZ=false
 
+# Set this to install Meslo Nerd Fonts
+INSTALL_FONT=false
+
 # Set the directory you wish to install Anaconda and NVM (they will be hidden directories)
 INSTALL_ROOT=$HOME
 
 ############################
-# Determin which package manager to use (only works for Fedora & Ubuntu currently)
+# Determine which package manager to use (only works for Fedora & Ubuntu currently)
 ############################
 which dnf > /dev/null && {
     PKG_MANAGER="dnf"
@@ -51,7 +54,7 @@ fi
 ############################
 # Install Oh-my-zsh if specified and set OMZ custom directory
 ############################
-if [ "$INSTALL_OMZ" = true ] ; then
+if [ "$INSTALL_OMZ" == true ] ; then
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 fi
 # This assumes that OMZ root is in $HOME
@@ -85,15 +88,19 @@ git clone https://github.com/arcticicestudio/nord-tmux.git ~/.tmux/themes/nord-t
 ############################
 # Get MesloLGS NF font -- need a nerd font for powerlevel10k prompt
 ############################
-wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf
-wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf
-wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf
-wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
+if [ "$INSTALL_FONT" == true ] ; then
+  mkdir fonts && cd fonts
+  wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf
+  wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf
+  wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf
+  wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
+  cd ../
+fi
 
 ############################
 # Install Anaconda to INSTALL_ROOT if specified
 ############################
-if [ "$INSTALL_ANACONDA" = true ] ; then
+if [ "$INSTALL_ANACONDA" == true ] ; then
   if [ ! -d $INSTALL_ROOT ] ; then
     echo "======= Creating $INSTALL_ROOT directory ================="
     mkdir -p $INSTALL_ROOT
@@ -110,7 +117,7 @@ fi
 ############################
 # Install NVM to $HOME if specified
 ############################
-if [ "$INSTALL_NVM" = true ] ; then
+if [ "$INSTALL_NVM" == true ] ; then
   if ! nvm -v > /dev/null ; then
     if [ ! -d $HOME/.nvm ] ; then
       echo "=================== Installing NVM  ======================="
