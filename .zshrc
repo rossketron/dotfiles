@@ -95,14 +95,14 @@ preexec() { echo -ne '\e[5 q' ; } # use beam shape cursor for each new prompt
 ############################
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/ross/software/install/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/home/ross/.conda/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/home/ross/software/install/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/ross/software/install/anaconda3/etc/profile.d/conda.sh"
+    if [ -f "/home/ross/.conda/etc/profile.d/conda.sh" ]; then
+        . "/home/ross/.conda/etc/profile.d/conda.sh"
     else
-        export PATH="/home/ross/software/install/anaconda3/bin:$PATH"
+        export PATH="/home/ross/.conda/bin:$PATH"
     fi
 fi
 unset __conda_setup

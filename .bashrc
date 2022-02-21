@@ -88,6 +88,6 @@ export NVM_DIR="$HOME/.nvm"
 #######################
 # Launch zsh to be default shell for WSL
 #######################
-if [ -t 1 ]; then
-  exec zsh
-fi
+# This line is commented out when the `bsh` function is 
+# called from within zsh (defined in ./zsh/shell.zshrc)
+if [ -t 1 ]; then exec zsh; fi

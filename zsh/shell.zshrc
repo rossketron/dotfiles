@@ -11,7 +11,7 @@ alias egrep='egrep --color=auto'
 ############################
 # History configuration
 ############################
-export HISTFILE=$DOTFILES/zsh/.zsh_history
+export HISTFILE=$HOME/.zsh_history
 
 # Save timestamp
 export HISTTIMEFORMAT="%F %T "
@@ -36,9 +36,9 @@ grab () {
 
 ############################
 # Verbosity for file operations
-############################
+############################ps
 alias cp="cp -v"
 alias mv="mv -v"
 alias rm="rm -v"
-alias c="clear"
-   
+alias clr="clear"
+alias c="code"

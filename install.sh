@@ -8,8 +8,8 @@ INSTALL_PKGS=false
 PKGS=(git curl wget vim zsh tmux) # List of packages to install
 
 # Set this to true to install Anaconda package manager
-INSTALL_ANACONDA=false
-ANACONDA_VERSION=2021.05-Linux-x86_64
+INSTALL_ANACONDA=true
+ANACONDA_VERSION=2021.11-Linux-x86_64
 
 # Set this to true to install NVM node version manager
 INSTALL_NVM=false
@@ -46,10 +46,10 @@ fi
 ############################
 # Rename existing config files to keep from losing
 ############################
-[[ -f ~/.zshrc ]] && mv ~/.zshrc ~/.zshrc.old
-[[ -f ~/.vimrc ]] && mv ~/.vimrc ~/.vimrc.old
-[[ -f ~/.p10k.zsh ]] && mv ~/.p10k.zsh ~/.p10k.zsh.old
-[[ -f ~/.tmux.conf ]] && mv ~/.tmux.conf ~/.tmux.conf.old
+# [[ -f ~/.zshrc ]] && mv ~/.zshrc ~/.zshrc.old
+# [[ -f ~/.vimrc ]] && mv ~/.vimrc ~/.vimrc.old
+# [[ -f ~/.p10k.zsh ]] && mv ~/.p10k.zsh ~/.p10k.zsh.old
+# [[ -f ~/.tmux.conf ]] && mv ~/.tmux.conf ~/.tmux.conf.old
 
 ############################
 # Install Oh-my-zsh if specified and set OMZ custom directory
@@ -58,32 +58,32 @@ if [ "$INSTALL_OMZ" == true ] ; then
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 fi
 # This assumes that OMZ root is in $HOME
-ZSH_CUSTOM=~/.oh-my-zsh/custom
+# ZSH_CUSTOM=~/.oh-my-zsh/custom
 
-############################
-# Copy new config files to $HOME. This must be done after installing OMZ to keep .zshrc current
-############################
-cp .zshrc ~
-cp .vimrc ~
-cp .p10k.zsh ~
-cp .tmux.conf ~
+# ############################
+# # Copy new config files to $HOME. This must be done after installing OMZ to keep .zshrc current
+# ############################
+# cp .zshrc ~
+# cp .vimrc ~
+# cp .p10k.zsh ~
+# cp .tmux.conf ~
 
 ############################
 # Clone custom plugins for syntax highlighting, conda completion, and powerlevel10k prompt
 ############################
-git clone https://github.com/esc/conda-zsh-completion.git $ZSH_CUSTOM/plugins/conda-zsh-completion
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
+# git clone https://github.com/esc/conda-zsh-completion.git $ZSH_CUSTOM/plugins/conda-zsh-completion
+# git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
+# git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
 
-############################
-# Run PlugInstall silently to set up vim plugins
-############################
-vim +'PlugInstall --sync' +qa
+# ############################
+# # Run PlugInstall silently to set up vim plugins
+# ############################
+# vim +'PlugInstall --sync' +qa
 
-############################
-# Clone custom nord theme for tmux
-############################
-git clone https://github.com/arcticicestudio/nord-tmux.git ~/.tmux/themes/nord-tmux
+# ############################
+# # Clone custom nord theme for tmux
+# ############################
+# git clone https://github.com/arcticicestudio/nord-tmux.git ~/.tmux/themes/nord-tmux
 
 ############################
 # Get MesloLGS NF font -- need a nerd font for powerlevel10k prompt
@@ -106,7 +106,7 @@ if [ "$INSTALL_ANACONDA" == true ] ; then
     mkdir -p $INSTALL_ROOT
   fi
   if ! which conda > /dev/null ; then
-    if [ ! -d $INSTALL_ROOT/anaconda3 && ! -d $INSTALL_ROOT/.anaconda3 ] ; then
+    if [ ! -d $INSTALL_ROOT/.conda && ! -d $INSTALL_ROOT/.conda ] ; then
       echo "======= Installing Anaconda3, Version: ${ANACONDA_VERSION} ================="
       wget https://repo.anaconda.com/archive/Anaconda3-$ANACONDA_VERSION.sh 
       bash Anaconda3-$ANACONDA_VERSION.sh -b -p $INSTALL_ROOT/.anaconda3
