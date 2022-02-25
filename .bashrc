@@ -1,3 +1,8 @@
+# Variables
+############################
+export GIT_DIRECTORY=/git   # should be /c/git or /git
+DOTFILES=$GIT_DIRECTORY/dotfiles # Location of your dotfiles
+
 #######################
 # Default Ubuntu bash configurations
 #######################
@@ -95,9 +100,9 @@ export HISTFILE=$HOME/.bash_history
 source $DOTFILES/git.sh
 source $DOTFILES/ember.sh
 source $DOTFILES/python.sh
-source $DOTFILES/custom.sh
 source $DOTFILES/shell.sh
 source $DOTFILES/windows.sh
+[ -f $DOTFILES/custom.sh ] && source $DOTFILES/custom.sh
 
 #######################
 # Launch zsh to be default shell for WSL

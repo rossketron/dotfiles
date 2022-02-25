@@ -21,8 +21,12 @@ export HISTSIZE=1000
 export HISTFILESIZE=2000
 
 # append to the history file, don't overwrite it
-setopt APPEND_HISTORY
-setopt SHARE_HISTORY
+if [ ! -z ${ZSH_VERSION+x} ]; then
+  setopt APPEND_HISTORY
+  setopt SHARE_HISTORY
+elif [ ! -z ${BASH_VERSION+x} ]; then
+  shopt -s histappend
+fi
 
 ############################
 # Easily search command history

@@ -125,9 +125,9 @@ export HISTFILE=$HOME/.zsh_history
 source $DOTFILES/git.sh
 source $DOTFILES/ember.sh
 source $DOTFILES/python.sh
-source $DOTFILES/custom.sh
 source $DOTFILES/shell.sh
 source $DOTFILES/windows.sh
+[ -f $DOTFILES/custom.sh ] && $DOTFILES/custom.sh
 
 ############################
 # Set up p10k configure command to customize prompt
