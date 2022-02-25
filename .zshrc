@@ -1,7 +1,7 @@
 ############################
 # Variables
 ############################
-export GIT_DIRECTORY=$HOME/git   # Location where your git repositories are cloned
+export GIT_DIRECTORY=/git   # should be /c/git or /git
 DOTFILES=$GIT_DIRECTORY/dotfiles # Location of your dotfiles
 
 ############################
@@ -115,15 +115,19 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+
+# Explicityly set history file
+export HISTFILE=$HOME/.zsh_history
+
 ############################
 # Source the shared configuration files
 ############################
-source $DOTFILES/zsh/git.zshrc
-source $DOTFILES/zsh/ember.zshrc
-source $DOTFILES/zsh/python.zshrc
-source $DOTFILES/zsh/remote.zshrc
-source $DOTFILES/zsh/shell.zshrc
-source $DOTFILES/zsh/windows.zshrc
+source $DOTFILES/git.sh
+source $DOTFILES/ember.sh
+source $DOTFILES/python.sh
+source $DOTFILES/custom.sh
+source $DOTFILES/shell.sh
+source $DOTFILES/windows.sh
 
 ############################
 # Set up p10k configure command to customize prompt

@@ -85,6 +85,20 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+############################
+# Source the shared configuration files
+############################
+
+# Explicityly set history file
+export HISTFILE=$HOME/.bash_history
+
+source $DOTFILES/git.sh
+source $DOTFILES/ember.sh
+source $DOTFILES/python.sh
+source $DOTFILES/custom.sh
+source $DOTFILES/shell.sh
+source $DOTFILES/windows.sh
+
 #######################
 # Launch zsh to be default shell for WSL
 #######################

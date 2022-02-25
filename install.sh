@@ -8,7 +8,7 @@ INSTALL_PKGS=false
 PKGS=(git curl wget vim zsh tmux) # List of packages to install
 
 # Set this to true to install Anaconda package manager
-INSTALL_ANACONDA=true
+INSTALL_ANACONDA=false
 ANACONDA_VERSION=2021.11-Linux-x86_64
 
 # Set this to true to install NVM node version manager
@@ -22,6 +22,9 @@ INSTALL_FONT=false
 
 # Set the directory you wish to install Anaconda and NVM (they will be hidden directories)
 INSTALL_ROOT=$HOME
+
+# Customize VIM setup with plugins
+INSTALL_VIM=false
 
 ############################
 # Determine which package manager to use (only works for Fedora & Ubuntu currently)
@@ -46,49 +49,55 @@ fi
 ############################
 # Rename existing config files to keep from losing
 ############################
-# [[ -f ~/.zshrc ]] && mv ~/.zshrc ~/.zshrc.old
-# [[ -f ~/.vimrc ]] && mv ~/.vimrc ~/.vimrc.old
-# [[ -f ~/.p10k.zsh ]] && mv ~/.p10k.zsh ~/.p10k.zsh.old
-# [[ -f ~/.tmux.conf ]] && mv ~/.tmux.conf ~/.tmux.conf.old
+[[ -f ~/.zshrc ]] && mv ~/.zshrc ~/.zshrc.old
+[[ -f ~/.vimrc ]] && mv ~/.vimrc ~/.vimrc.old
+[[ -f ~/.p10k.zsh ]] && mv ~/.p10k.zsh ~/.p10k.zsh.old
+[[ -f ~/.tmux.conf ]] && mv ~/.tmux.conf ~/.tmux.conf.old
 
 ############################
 # Install Oh-my-zsh if specified and set OMZ custom directory
 ############################
-if [ "$INSTALL_OMZ" == true ] ; then
+if [ "$INSTALL_OMZ" = true ] ; then
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 fi
+
 # This assumes that OMZ root is in $HOME
-# ZSH_CUSTOM=~/.oh-my-zsh/custom
-
-# ############################
-# # Copy new config files to $HOME. This must be done after installing OMZ to keep .zshrc current
-# ############################
-# cp .zshrc ~
-# cp .vimrc ~
-# cp .p10k.zsh ~
-# cp .tmux.conf ~
+ZSH_CUSTOM=~/.oh-my-zsh/custom
 
 ############################
-# Clone custom plugins for syntax highlighting, conda completion, and powerlevel10k prompt
+# Copy new config files to $HOME. This must be done after installing OMZ to keep .zshrc current
 ############################
-# git clone https://github.com/esc/conda-zsh-completion.git $ZSH_CUSTOM/plugins/conda-zsh-completion
-# git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
-# git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
+cp .zshrc ~
+cp .vimrc ~
+cp .p10k.zsh ~
+cp .tmux.conf ~
 
-# ############################
-# # Run PlugInstall silently to set up vim plugins
-# ############################
-# vim +'PlugInstall --sync' +qa
+###########################
+Clone custom plugins for syntax highlighting, conda completion, and powerlevel10k prompt
+###########################
+git clone https://github.com/esc/conda-zsh-completion.git $ZSH_CUSTOM/plugins/conda-zsh-completion
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
 
-# ############################
-# # Clone custom nord theme for tmux
-# ############################
-# git clone https://github.com/arcticicestudio/nord-tmux.git ~/.tmux/themes/nord-tmux
+############################
+# Run PlugInstall silently to set up vim plugins
+############################
+
+if [ "$INSTALL_VIM" = true ] ; then
+  vim +'PlugInstall --sync' +qa
+fi
+
+############################
+# Clone custom nord theme for tmux
+############################
+if [ "$INSTALL_TMUX" = true ] ; then
+  git clone https://github.com/arcticicestudio/nord-tmux.git ~/.tmux/themes/nord-tmux
+fi
 
 ############################
 # Get MesloLGS NF font -- need a nerd font for powerlevel10k prompt
 ############################
-if [ "$INSTALL_FONT" == true ] ; then
+if [ "$INSTALL_FONT" = true ] ; then
   mkdir fonts && cd fonts
   wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf
   wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf
@@ -100,7 +109,7 @@ fi
 ############################
 # Install Anaconda to INSTALL_ROOT if specified
 ############################
-if [ "$INSTALL_ANACONDA" == true ] ; then
+if [ "$INSTALL_ANACONDA" = true ] ; then
   if [ ! -d $INSTALL_ROOT ] ; then
     echo "======= Creating $INSTALL_ROOT directory ================="
     mkdir -p $INSTALL_ROOT
@@ -117,7 +126,7 @@ fi
 ############################
 # Install NVM to $HOME if specified
 ############################
-if [ "$INSTALL_NVM" == true ] ; then
+if [ "$INSTALL_NVM" = true ] ; then
   if ! nvm -v > /dev/null ; then
     if [ ! -d $HOME/.nvm ] ; then
       echo "=================== Installing NVM  ======================="
@@ -130,9 +139,7 @@ fi
 echo "================ Instructions for Completing Installation ==================
         1. Install all Meslo Font files downloaded to this directory by opening in file viewer and clicking \'install\'
         2. Open terminal settings and change font to MesloLGS NF Regular
-        3. Change theme to One Dark Campbell
-        4. Run the following commands
-        4. Source zsh by running the command: 
+        3. Source zsh by running the command: 
              $ zsh
         5. (Optional) Change shell to zsh from bash:
              $ sudo chsh -s $(which zsh)

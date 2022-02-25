@@ -13,9 +13,6 @@ alias egrep='egrep --color=auto'
 ############################
 export HISTFILE=$HOME/.zsh_history
 
-# Save timestamp
-export HISTTIMEFORMAT="%F %T "
-
 # Don't store duplicates
 export HISTCONTROL=ignoreboth:erasedups
 
