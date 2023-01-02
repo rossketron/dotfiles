@@ -1,27 +1,27 @@
 #!/bin/bash
 
 ############################
-# Variables (0 = false : 1 = true)
+# Variables
 ############################
-# List of packages to install
-INSTALL_PKGS=0
-PKGS=(git curl wget vim zsh tmux) 
 
-# Version of Anaconda package manager to install
-INSTALL_CONDA=0
-CONDA_VERSION=2021.11-Linux-x86_64
-
-INSTALL_NVM=0
-INSTALL_OMZ=0
-INSTALL_TMUX_THEME=0
+INSTALL_PACKAGES=1
+INSTALL_ANACONDA=1
+INSTALL_NVM=1
+INSTALL_OMZ=1
 
 # Directory to install Anaconda and NVM (they will be hidden directories)
 INSTALL_ROOT=$HOME
 
+# List of packages to install
+PACKAGES=(git curl wget vim zsh tmux) 
+
+# Version of Anaconda package manager to install
+CONDA_VERSION=2022.10-Linux-x86_64
+
 ############################
 # Install system packages listed in PKGS and C_PKGS
 ############################
-((INSTALL_PKGS)) && sudo $PKG_MANAGER install $PKGS $C_PKGS
+sudo apt install ${PACKAGES[@]}
 
 ############################
 # Rename existing config files to keep from losing
@@ -36,13 +36,13 @@ INSTALL_ROOT=$HOME
 # Install Oh-my-zsh if specified and set OMZ custom directory
 # Clone custom plugins for syntax highlighting, conda completion, and powerlevel10k prompt
 ###########################
-((INSTALL_OMZ)) && {
+if [ $INSTALL_OMZ -eq 1 ]; then
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
   ZSH_CUSTOM=~/.oh-my-zsh/custom
   git clone https://github.com/esc/conda-zsh-completion.git $ZSH_CUSTOM/plugins/conda-zsh-completion
   git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
-}
+fi
 
 ############################
 # Copy new config files to $HOME. This must be done after installing OMZ to keep .zshrc current
@@ -62,43 +62,41 @@ vim +'PlugInstall --sync' +qa
 ############################
 # Clone custom nord theme for tmux
 ############################
-((INSTALL_TMUX_THEME)) && \
-  git clone https://github.com/arcticicestudio/nord-tmux.git ~/.tmux/themes/nord-tmux
+git clone https://github.com/arcticicestudio/nord-tmux.git ~/.tmux/themes/nord-tmux
 
 ############################
 # Get MesloLGS NF and Fira Code fonts
 ############################
-if [ ! -d fonts ]; then
-  mkdir fonts && cd fonts
-  wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf
-  wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf
-  wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf
-  wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
-  mkdir tmp && cd tmp
-  wget https://github.com/tonsky/FiraCode/releases/download/6.2/Fira_Code_v6.2.zip
-  unzip Fira_Code_v6.2.zip
-  mv ttf/* ../fonts/
-  cd ../
-  rm -rf tmp
-  cd ../
-fi
+rm -rf fonts
+mkdir fonts && cd fonts
+wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf
+wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf
+wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf
+wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
+mkdir tmp && cd tmp
+wget https://github.com/tonsky/FiraCode/releases/download/6.2/Fira_Code_v6.2.zip
+unzip Fira_Code_v6.2.zip
+mv ttf/* ../fonts
+cd ../
+rm -rf tmp
+cd ../
 
 ############################
 # Install Anaconda to INSTALL_ROOT
 ############################
-((INSTALL_CONDA)) && {
+if [ $INSTALL_ANACONDA -eq 1 ]; then
   echo "======= Installing Anaconda3, Version: ${CONDA_VERSION} ================="
   wget https://repo.anaconda.com/archive/Anaconda3-$CONDA_VERSION.sh 
   bash Anaconda3-$CONDA_VERSION.sh -b -p $INSTALL_ROOT/.conda
-}
+fi
 
 ############################
 # Install NVM to $HOME
 ############################
-((INSTALL_NVM)) && {
+if [ $INSTALL_NVM -eq 1 ]; then
   echo "=================== Installing NVM  ======================="
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-}
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+fi
 
 # Print instructions for finishing install of fonts and terminal settings
 echo "================ Instructions for Completing Installation ==================
