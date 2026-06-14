@@ -1,15 +1,23 @@
-############################
-# Configure aliases for ssh connections
-############################
-alias ssh-linode="ssh ross@139.177.205.136"
-alias ssh-tellico="ssh cketron2@tellico.icl.utk.edu"
-alias ssh-hydra="ssh cketron2@hydra22.eecs.utk.edu"
-
+########################################################
+# Easily search command history
+# But don't show too much each time
+########################################################
 grab() {
-    history | grep $1
+  if [[ "$1" = "-a" || "$1" = "--all" ]]; then
+    return "$(history | grep "$2")"
+  fi
+
+  return "$(history | grep "$1" | head -n 10)"
 }
 
-grabf() {
-    cat $1 | grep $2
-}
+########################################################
+# Give ls and grep some color
+########################################################
+alias ls="ls -al --color=auto --group-directories-first"
+alias grep='grep --color=auto'
 
+########################################################
+# I can't type clear and
+# can't <ctrl>l is awkward
+########################################################
+alias clr="clear"
