@@ -7,7 +7,6 @@
 INSTALL_UV=1
 INSTALL_OMZ=1
 INSTALL_ASDF=1
-INSTALL_PACKAGES=1
 
 # List of packages to install
 PACKAGES=(build-essentials git curl wget vim zsh tmux neovim lazygit ripgrep unzip)
@@ -15,7 +14,7 @@ PACKAGES=(build-essentials git curl wget vim zsh tmux neovim lazygit ripgrep unz
 ########################################################
 # Install system packages listed in PKGS and C_PKGS
 ########################################################
-sudo apt update && sudo apt install -y ${PACKAGES[@]}
+sudo apt update && sudo apt install -y "${PACKAGES[@]}"
 
 ########################################################
 # Rename existing config files to keep from losing
@@ -89,12 +88,12 @@ fi
 ########################################################
 # Print instructions for finishing install of fonts and terminal settings
 ########################################################
-echo "================ Instructions for Completing Installation ==================
+printf "================ Instructions for Completing Installation ==================
         1. Install all Font files downloaded to this directory by opening in 
            file viewer and clicking \'install\'
         2. Open terminal settings and change font to MesloLGS NF Regular
         3. Source zsh by running the command: 
-             $ zsh
+             \$ zsh
         5. (Optional) Change shell to zsh from bash:
-             $ sudo chsh -s $(which zsh)
+             \$ sudo chsh -s \$(which zsh)
       ============================================================================"
